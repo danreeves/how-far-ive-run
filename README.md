@@ -8,6 +8,7 @@ Requests to `/json` will return that data in JSON. Units are metres and seconds.
 ## Running locally
 
 1. Clone the repo
+2. `npm install`
 2. Add a `.env` file to the project with `WITHINGS_CONSUMER_KEY` and `WITHINGS_CONSUMER_SECRET` variables. `dotenv` is used to load them locally. Get your credentials from [the Withings site](http://oauth.withings.com/api#first_steps).
 3. `npm run dev`
 4. Auth with your Withings account

@@ -18,11 +18,12 @@ if (process.env.NODE_ENV === 'development') {
 
 const WITHINGS_CONSUMER_KEY = process.env.WITHINGS_CONSUMER_KEY;
 const WITHINGS_CONSUMER_SECRET = process.env.WITHINGS_CONSUMER_SECRET;
+const PORT = 3000;
+const CALLBACK_URL = process.env.NOW_URL || `http://localhost:${PORT}`;
 
 const USER_TOKEN = '';
 const USER_SECRET = '';
 const USER_ID = '';
-const PORT = 3000;
 
 const app = new Koa();
 
@@ -34,7 +35,7 @@ passport.use(new WithingsStrategy(
     {
         consumerKey: WITHINGS_CONSUMER_KEY,
         consumerSecret: WITHINGS_CONSUMER_SECRET,
-        callbackURL: process.env.NOW_URL || `http://localhost:${PORT}`
+        callbackURL: CALLBACK_URL,
     },
     function(token, tokenSecret, profile, done) {
         USER_TOKEN = token;
@@ -122,12 +123,13 @@ app.use(async (ctx, next) => {
             totalDistance
         )} miles, over ${sessions} sessions. That's an average of ${miles(
             avgDistance
-        )} miles per session. The longest run was ${miles(
+        )} miles per session. The longest distance was ${miles(
             longest
-        )} miles. The fastest run was ${miles(
+        )} miles. The fastest time was ${miles(
             fastest.data.distance
         )} miles in ${fastest.data.effduration / 60} minutes.`;
     }
 });
 
 app.listen(PORT);
+console.log(`🏃  Running at ${CALLBACK_URL}`);
