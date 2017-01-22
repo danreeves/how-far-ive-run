@@ -120,6 +120,7 @@ app.use(async (ctx, next) => {
         };
     } else {
         ctx.body = `
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             * {
                 margin: 0;
@@ -131,6 +132,7 @@ app.use(async (ctx, next) => {
                 font-size: 2em;
                 font-family: monospace;
                 width: 50%;
+                min-width: 360px;
                 position: relative;
                 margin: auto;
                 margin-top: 2em;
