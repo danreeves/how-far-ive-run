@@ -3,7 +3,7 @@ import Withings from 'withings-request';
 import passport from 'koa-passport';
 import session from 'koa-session';
 import json from 'koa-json';
-import {Strategy as WithingsStrategy} from 'passport-withings';
+import { Strategy as WithingsStrategy } from 'passport-withings';
 
 import miles from './util/miles';
 import speed from './util/speed';
@@ -35,7 +35,7 @@ passport.use(new WithingsStrategy(
     {
         consumerKey: WITHINGS_CONSUMER_KEY,
         consumerSecret: WITHINGS_CONSUMER_SECRET,
-        callbackURL: CALLBACK_URL,
+        callbackURL: CALLBACK_URL
     },
     function(token, tokenSecret, profile, done) {
         USER_TOKEN = token;
@@ -46,7 +46,7 @@ passport.use(new WithingsStrategy(
 ));
 
 // Init passport auth middleware
-app.keys = ['secret'];
+app.keys = [ 'secret' ];
 app.use(session(app));
 app.use(passport.initialize());
 
@@ -55,7 +55,7 @@ app.use(async (ctx, next) => {
     if (!USER_ID) {
         return passport.authenticate('withings', function(err, user) {
             if (user === false) {
-                ctx.body = {success: false};
+                ctx.body = { success: false };
                 ctx.throw(401);
             } else {
                 ctx.login(user);
@@ -82,7 +82,7 @@ app.use(async (ctx, next) => {
         data = await getData(withings);
     } catch (e) {
         console.log('Errored');
-        ctx.body = {error: `💩 ${e}`};
+        ctx.body = { error: `💩 ${e}` };
         return next();
     }
 
@@ -119,15 +119,74 @@ app.use(async (ctx, next) => {
             }
         };
     } else {
-        ctx.body = `In ${new Date().getFullYear()} I've run ${miles(
+        ctx.body = `
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: #121010;
+                color: white;
+                font-size: 2em;
+                font-family: monospace;
+                width: 50%;
+                position: relative;
+                margin: auto;
+                margin-top: 2em;
+            }
+            body::before {
+                position: fixed;
+                content: " ";
+                display: block;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+                z-index: 2;
+                background-size: 100% 2px, 3px 100%;
+                pointer-events: none;
+            }
+            h1:before, p:before {
+                content: '> ';
+                position: absolute;
+                left: 0.25em;
+            }
+            h1, p {
+                padding-left: 1.25em;
+                margin-bottom: 1em;
+                font-size: 1em;
+            }
+            p {
+                position: relative;
+            }
+            p:before {
+                bottom: -2em;
+                animation: cursor 1s infinite;
+            }
+            @keyframes cursor {
+                0% {
+                    opacity: 0;
+                }
+                40% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+        </style>
+        <h1>🏃</h1>
+        <p>In ${new Date().getFullYear()} I've run ${miles(
             totalDistance
-        )} miles, over ${sessions} sessions. That's an average of ${miles(
-            avgDistance
-        )} miles per session. The longest distance was ${miles(
-            longest
-        )} miles. The fastest time was ${miles(
-            fastest.data.distance
-        )} miles in ${fastest.data.effduration / 60} minutes.`;
+        )} miles, over ${sessions} sessions. That's an average of ${miles(avgDistance)} miles per session. The longest distance was ${miles(longest)} miles. The fastest time was ${miles(fastest.data.distance)} miles in ${fastest.data.effduration / 60} minutes.</p>`;
     }
 });
 
