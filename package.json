@@ -1,5 +1,5 @@
 {
-  "name": "how-far-ive-run-micro",
+  "name": "how-far-ive-run",
   "version": "1.0.0",
   "description": "Some data from the Withings API about my running this year",
   "scripts": {
