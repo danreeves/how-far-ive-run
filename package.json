@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Some data from the Withings API about my running this year",
   "scripts": {
-    "deploy": "now -e WITHINGS_CONSUMER_KEY=@withings-consumer-key -e WITHINGS_CONSUMER_SECRET=@withings-consumer-secret",
+    "deploy": "now -e WITHINGS_CONSUMER_KEY=@withings-consumer-key -e WITHINGS_CONSUMER_SECRET=@withings-consumer-secret -e JSONBIN_SECRET=@jsonbin-secret",
     "dev": "backpack",
     "build": "backpack build",
     "start": "node build/main.js"
@@ -14,6 +14,7 @@
     "backpack-core": "^0.0.7"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "dotenv": "^4.0.0",
     "koa": "2",
     "koa-json": "2",

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Koa from 'koa';
 import Withings from 'withings-request';
 import passport from 'koa-passport';
@@ -8,23 +9,14 @@ import { Strategy as WithingsStrategy } from 'passport-withings';
 import miles from './util/miles';
 import speed from './util/speed';
 import getData from './util/api';
-
-if (process.env.NODE_ENV === 'development') {
-    try {
-        require('dotenv').load();
-    } catch (e) {
-    }
-}
+import { getAuth, setAuth } from './util/auth';
 
 const WITHINGS_CONSUMER_KEY = process.env.WITHINGS_CONSUMER_KEY;
 const WITHINGS_CONSUMER_SECRET = process.env.WITHINGS_CONSUMER_SECRET;
 const PORT = 3000;
 const CALLBACK_URL = process.env.NOW_URL || `http://localhost:${PORT}`;
 
-const USER_TOKEN = '';
-const USER_SECRET = '';
-const USER_ID = '';
-
+const authRequest = getAuth();
 const app = new Koa();
 
 // Lets you return an object as json
@@ -38,9 +30,13 @@ passport.use(new WithingsStrategy(
         callbackURL: CALLBACK_URL
     },
     function(token, tokenSecret, profile, done) {
-        USER_TOKEN = token;
-        USER_SECRET = tokenSecret;
-        USER_ID = profile.id;
+        const auth = {
+            token: token,
+            secret: tokenSecret,
+            id: profile.id
+        };
+        authRequest = Promise.resolve(auth);
+        setAuth(auth);
         return done(undefined, profile.id);
     }
 ));
@@ -51,8 +47,9 @@ app.use(session(app));
 app.use(passport.initialize());
 
 app.use(async (ctx, next) => {
+    const auth = await authRequest;
     // Only oauth if we haven't cached the necessary credentials
-    if (!USER_ID) {
+    if (!auth.id) {
         return passport.authenticate('withings', function(err, user) {
             if (user === false) {
                 ctx.body = { success: false };
@@ -67,12 +64,13 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
+    const auth = await authRequest;
     const options = {
         consumerKey: WITHINGS_CONSUMER_KEY,
         consumerSecret: WITHINGS_CONSUMER_SECRET,
-        token: USER_TOKEN,
-        tokenSecret: USER_SECRET,
-        userid: USER_ID,
+        token: auth.token,
+        tokenSecret: auth.secret,
+        userid: auth.id,
         wbsUrl: 'https://wbsapi.withings.net/v2/',
         timeout: 10000
     };
@@ -116,7 +114,7 @@ app.use(async (ctx, next) => {
             fastest: {
                 distance: fastest.data.distance,
                 duration: fastest.data.effduration
-            }
+            },
         };
     } else {
         ctx.body = `
