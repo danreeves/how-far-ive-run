@@ -10,6 +10,7 @@ import miles from './util/miles';
 import speed from './util/speed';
 import getData from './util/api';
 import { getAuth, setAuth } from './util/auth';
+import gif from './util/gif';
 
 const WITHINGS_CONSUMER_KEY = process.env.WITHINGS_CONSUMER_KEY;
 const WITHINGS_CONSUMER_SECRET = process.env.WITHINGS_CONSUMER_SECRET;
@@ -118,6 +119,7 @@ app.use(async (ctx, next) => {
         };
     } else {
         ctx.body = `
+        <title>How far I've run in ${new Date().getFullYear()}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             * {
@@ -125,68 +127,38 @@ app.use(async (ctx, next) => {
                 padding: 0;
             }
             body {
-                background: #121010;
+                background: no-repeat center url("${gif()}");
+                background-size: cover;
+                font-family: Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif;
                 color: white;
-                font-size: 2em;
-                font-family: monospace;
+                text-stroke: 3px black;
+                -webkit-text-stroke: 3px black;
+                -moz-text-stroke: 3px black;
+                -ms-text-stoke: 3px black;
+                text-transform: uppercase;
+                font-weight: 900;
+                font-size: 3rem;
+                margin: auto;
+                margin-top: 2rem;
                 width: 50%;
                 min-width: 360px;
-                position: relative;
-                margin: auto;
-                margin-top: 2em;
-            }
-            body::before {
-                position: fixed;
-                content: " ";
-                display: block;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-                z-index: 2;
-                background-size: 100% 2px, 3px 100%;
-                pointer-events: none;
-            }
-            h1:before, p:before {
-                content: '> ';
-                position: absolute;
-                left: 0.25em;
-            }
-            h1, p {
-                padding-left: 1.25em;
-                margin-bottom: 1em;
-                font-size: 1em;
             }
             p {
-                position: relative;
+                margin-bottom: 1rem;
             }
-            p:before {
-                bottom: -2em;
-                animation: cursor 1s infinite;
+            a {
+                color: white;
+                text-stroke: 3px black;
+                -webkit-text-stroke: 3px black;
+                -moz-text-stroke: 3px black;
+                -ms-text-stoke: 3px black;
             }
-            @keyframes cursor {
-                0% {
-                    opacity: 0;
-                }
-                40% {
-                    opacity: 0;
-                }
-                50% {
-                    opacity: 1;
-                }
-                90% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
+            a:visited {
+                color: white;
             }
         </style>
-        <h1>🏃</h1>
-        <p>In ${new Date().getFullYear()} I've run ${miles(
-            totalDistance
-        )} miles, over ${sessions} sessions. That's an average of ${miles(avgDistance)} miles per session. The longest distance was ${miles(longest)} miles. The fastest time was ${miles(fastest.data.distance)} miles in ${fastest.data.effduration / 60} minutes.</p>`;
+        <p>In ${new Date().getFullYear()} I've run ${miles(totalDistance)} miles, over ${sessions} sessions. That's an average of ${miles(avgDistance)} miles per session. The longest distance was ${miles(longest)} miles. The fastest time was ${miles(fastest.data.distance)} miles in ${fastest.data.effduration / 60} minutes.</p>
+        <p>Code <a href="https://github.com/danreeves/how-far-ive-run">here</a>.</p>`;
     }
 });
 
