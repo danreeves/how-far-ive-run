@@ -126,9 +126,13 @@ app.use(async (ctx, next) => {
                 margin: 0;
                 padding: 0;
             }
-            body {
+            html {
+                height: 100%;
+                width: 100%;
                 background: no-repeat center url("${gif()}");
                 background-size: cover;
+            }
+            body {
                 font-family: Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif;
                 color: white;
                 text-stroke: 3px black;
