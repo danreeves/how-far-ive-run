@@ -126,11 +126,13 @@ app.use(async (ctx, next) => {
                 margin: 0;
                 padding: 0;
             }
-            html {
+            main {
+                position: fixed;
+                height: 100%;
+                width: 100%;
                 background: url("${gif()}") no-repeat center center fixed;
                 background-size: cover;
-            }
-            body {
+
                 font-family: Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif;
                 color: white;
                 text-stroke: 3px black;
@@ -140,20 +142,22 @@ app.use(async (ctx, next) => {
                 text-transform: uppercase;
                 font-weight: 900;
                 font-size: 3rem;
-                margin: auto;
-                margin-top: 2rem;
-                width: 50%;
-                min-width: 360px;
-            }
-            @media (max-width: 400px) {
-                body {
-                    width: 90%;
-                    min-width: 0;
-                    font-size: 2.5em;
-                }
+                overflow-y: scroll;
             }
             p {
+                width: 50%;
+                min-width: 360px;
+
+                margin: auto;
+                margin-top: 2rem;
                 margin-bottom: 1rem;
+            }
+            @media (max-width: 400px) {
+                p {
+                    width: 90%;
+                    min-width: 0;
+                    font-size: 1em;
+                }
             }
             a {
                 color: white;
@@ -166,8 +170,10 @@ app.use(async (ctx, next) => {
                 color: white;
             }
         </style>
-        <p>In ${new Date().getFullYear()} I've run ${miles(totalDistance)} miles, over ${sessions} sessions. That's an average of ${miles(avgDistance)} miles per session. The longest distance was ${miles(longest)} miles. The fastest time was ${miles(fastest.data.distance)} miles in ${fastest.data.effduration / 60} minutes.</p>
-        <p>Code <a href="https://github.com/danreeves/how-far-ive-run">here</a>.</p>`;
+        <main>
+            <p>In ${new Date().getFullYear()} I've run ${miles(totalDistance)} miles, over ${sessions} sessions. That's an average of ${miles(avgDistance)} miles per session. The longest distance was ${miles(longest)} miles. The fastest time was ${miles(fastest.data.distance)} miles in ${fastest.data.effduration / 60} minutes.</p>
+            <p>Code <a href="https://github.com/danreeves/how-far-ive-run">here</a>.</p>
+        </main>`;
     }
 });
 
