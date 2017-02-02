@@ -127,9 +127,7 @@ app.use(async (ctx, next) => {
                 padding: 0;
             }
             html {
-                height: 100%;
-                width: 100%;
-                background: no-repeat center url("${gif()}");
+                background: url("${gif()}") no-repeat center center fixed;
                 background-size: cover;
             }
             body {
@@ -146,6 +144,13 @@ app.use(async (ctx, next) => {
                 margin-top: 2rem;
                 width: 50%;
                 min-width: 360px;
+            }
+            @media (max-width: 400px) {
+                body {
+                    width: 90%;
+                    min-width: 0;
+                    font-size: 2.5em;
+                }
             }
             p {
                 margin-bottom: 1rem;
