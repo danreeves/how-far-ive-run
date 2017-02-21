@@ -11,19 +11,19 @@
   "author": "Dan Reeves <hey@danreev.es>",
   "license": "ISC",
   "devDependencies": {
-    "backpack-core": "^0.0.7"
+    "backpack-core": "^0.1.0"
   },
   "dependencies": {
-    "axios": "^0.15.3",
-    "dotenv": "^4.0.0",
+    "axios": "0.15.3",
+    "dotenv": "4.0.0",
     "koa": "2",
     "koa-json": "2",
-    "koa-passport": "3",
-    "koa-session": "^3.4.0",
-    "lru-cache": "^4.0.2",
-    "passport": "^0.3.2",
-    "passport-withings": "^0.1.0",
-    "withings-request": "^0.0.2"
+    "koa-passport": "3.0.0-rc.3",
+    "koa-session": "3.4.0",
+    "lru-cache": "4.0.2",
+    "passport": "0.3.2",
+    "passport-withings": "0.1.0",
+    "withings-request": "0.0.2"
   },
   "now": {
     "alias": "running.danreev.es"

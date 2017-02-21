@@ -8,7 +8,11 @@ import { Strategy as WithingsStrategy } from 'passport-withings';
 
 import miles from './util/miles';
 import speed from './util/speed';
-import getData from './util/api';
+import {
+    getData,
+    getNotifications,
+    subscribe
+} from './util/api';
 import { getAuth, setAuth } from './util/auth';
 import gif from './util/gif';
 
@@ -179,3 +183,30 @@ app.use(async (ctx, next) => {
 
 app.listen(PORT);
 console.log(`🏃  Running at ${CALLBACK_URL}`);
+
+authRequest.then(async function (auth) {
+    const options = {
+        consumerKey: WITHINGS_CONSUMER_KEY,
+        consumerSecret: WITHINGS_CONSUMER_SECRET,
+        token: auth.token,
+        tokenSecret: auth.secret,
+        userid: auth.id,
+        wbsUrl: 'https://wbsapi.withings.net/v2/',
+        timeout: 10000
+    };
+    const withings = Withings(options);
+    const profiles = await getNotifications(withings);
+    console.log(profiles)
+    // if (!profiles.length) {
+    //     try {
+    //         console.log(await subscribe(withings, {
+    //             userid: auth.id,
+    //             callbackurl: CALLBACK_URL,
+    //             comment: 'how-far-ive-run',
+    //             appli: 16,
+    //         }));
+    //     } catch (e) {
+    //         console.log(`💩 ${e}`);
+    //     }
+    // }
+});

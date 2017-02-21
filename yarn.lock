@@ -158,7 +158,7 @@ aws4@^1.2.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.5.0.tgz#0a29ffb79c31c9e712eeb087e8e7a64b4a56d755"
 
-axios@^0.15.3:
+axios@0.15.3:
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
   dependencies:
@@ -172,7 +172,7 @@ babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@^6.21.0, babel-core@^6.22.0:
+babel-core@^6.22.0:
   version "6.22.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.22.1.tgz#9c5fd658ba1772d28d721f6d25d968fc7ae21648"
   dependencies:
@@ -350,7 +350,7 @@ babel-plugin-syntax-trailing-function-commas@^6.13.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-6.22.0.tgz#ba0360937f8d06e40180a43fe0d5616fff532cf3"
 
-babel-plugin-transform-async-to-generator@^6.16.0, babel-plugin-transform-async-to-generator@^6.8.0:
+babel-plugin-transform-async-to-generator@^6.8.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-async-to-generator/-/babel-plugin-transform-async-to-generator-6.22.0.tgz#194b6938ec195ad36efc4c33a971acf00d8cd35e"
   dependencies:
@@ -550,7 +550,7 @@ babel-plugin-transform-object-rest-spread@^6.20.2:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-regenerator@^6.6.0:
+babel-plugin-transform-regenerator@^6.22.0, babel-plugin-transform-regenerator@^6.6.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.22.0.tgz#65740593a319c44522157538d690b84094617ea6"
   dependencies:
@@ -568,6 +568,19 @@ babel-plugin-transform-strict-mode@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
     babel-types "^6.22.0"
+
+babel-preset-backpack@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/babel-preset-backpack/-/babel-preset-backpack-0.0.9.tgz#ab2259fe1ae4bdef393fc06b1e069a7dcd2deb7a"
+  dependencies:
+    babel-plugin-transform-class-properties "^6.19.0"
+    babel-plugin-transform-es2015-modules-commonjs "^6.18.0"
+    babel-plugin-transform-es2015-parameters "^6.21.0"
+    babel-plugin-transform-object-rest-spread "^6.20.2"
+    babel-plugin-transform-regenerator "^6.22.0"
+    babel-plugin-transform-runtime "^6.15.0"
+    babel-preset-env "^1.1.4"
+    babel-runtime "^6.22.0"
 
 babel-preset-env@^1.1.4:
   version "1.1.8"
@@ -658,25 +671,18 @@ babylon@^6.11.0, babylon@^6.15.0:
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.15.0.tgz#ba65cfa1a80e1759b0e89fb562e27dccae70348e"
 
-backpack-core@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/backpack-core/-/backpack-core-0.0.7.tgz#c475ccb6183d3b1e0341a76f43b18034088b22f3"
+backpack-core@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/backpack-core/-/backpack-core-0.1.0.tgz#ea4c199d2e861f1f0cbcd76caa8d69f4fecdcf1f"
   dependencies:
-    babel-core "^6.21.0"
+    babel-core "^6.22.0"
     babel-loader "^6.2.10"
-    babel-plugin-transform-async-to-generator "^6.16.0"
-    babel-plugin-transform-class-properties "^6.19.0"
-    babel-plugin-transform-es2015-modules-commonjs "^6.18.0"
-    babel-plugin-transform-es2015-parameters "^6.21.0"
-    babel-plugin-transform-object-rest-spread "^6.20.2"
-    babel-plugin-transform-runtime "^6.15.0"
-    babel-preset-env "^1.1.4"
-    chokidar "^1.6.1"
+    babel-preset-backpack "^0.0.9"
     cross-spawn "^5.0.1"
     friendly-errors-webpack-plugin "^1.1.2"
     nodemon "^1.11.0"
     ramda "^0.23.0"
-    source-map-support "^0.4.9"
+    source-map-support "^0.4.11"
     webpack "2.2.0-rc.3"
     webpack-node-externals "^1.5.4"
 
@@ -868,7 +874,7 @@ chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chokidar@^1.4.3, chokidar@^1.6.1:
+chokidar@^1.4.3:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.1.tgz#2f4447ab5e96e50fb3d789fd90d4c72e0e4c70c2"
   dependencies:
@@ -1134,7 +1140,7 @@ domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
-dotenv@^4.0.0:
+dotenv@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
 
@@ -1860,13 +1866,13 @@ koa-json@2:
     koa-is-json "1"
     streaming-json-stringify "3"
 
-koa-passport@3:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/koa-passport/-/koa-passport-2.2.2.tgz#7d93dc5cea0be1622f76b39a0b0444e5ad445fbb"
+koa-passport@3.0.0-rc.3:
+  version "3.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/koa-passport/-/koa-passport-3.0.0-rc.3.tgz#f53f28c8b522719ad2cc3c828778a8f8c8b08abd"
   dependencies:
-    passport "^0.3.0"
+    passport "^0.3.2"
 
-koa-session@^3.4.0:
+koa-session@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/koa-session/-/koa-session-3.4.0.tgz#ce270291a4fcfbafe199abb64ccd9830e8c787bf"
   dependencies:
@@ -2025,7 +2031,7 @@ lowercase-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.0.tgz#4e3366b39e7f5457e35f1324bdf6f88d0bfc7306"
 
-lru-cache@^4.0.1, lru-cache@^4.0.2:
+lru-cache@4.0.2, lru-cache@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.0.2.tgz#1d17679c069cda5d040991a09dbc2c0db377e55e"
   dependencies:
@@ -2378,13 +2384,13 @@ passport-strategy@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-withings@^0.1.0:
+passport-withings@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/passport-withings/-/passport-withings-0.1.0.tgz#3087c01e3f281575bd87e7cd01986b6a79480621"
   dependencies:
     passport-oauth ">= 0.1.0"
 
-passport@^0.3.0, passport@^0.3.2:
+passport@0.3.2, passport@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/passport/-/passport-0.3.2.tgz#9dd009f915e8fe095b0124a01b8f82da07510102"
   dependencies:
@@ -2812,7 +2818,13 @@ source-list-map@~0.1.7:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-0.1.8.tgz#c550b2ab5427f6b3f21f5afead88c4f5587b2106"
 
-source-map-support@^0.4.2, source-map-support@^0.4.9:
+source-map-support@^0.4.11:
+  version "0.4.11"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.11.tgz#647f939978b38535909530885303daf23279f322"
+  dependencies:
+    source-map "^0.5.3"
+
+source-map-support@^0.4.2:
   version "0.4.10"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.10.tgz#d7b19038040a14c0837a18e630a196453952b378"
   dependencies:
@@ -3183,7 +3195,7 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-withings-request@^0.0.2:
+withings-request@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/withings-request/-/withings-request-0.0.2.tgz#93e192100f42034b982487e0a18dfc81f97fb175"
   dependencies:
