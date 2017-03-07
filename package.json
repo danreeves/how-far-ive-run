@@ -3,17 +3,15 @@
   "version": "1.0.0",
   "description": "Some data from the Withings API about my running this year",
   "scripts": {
-    "deploy": "now -e WITHINGS_CONSUMER_KEY=@withings-consumer-key -e WITHINGS_CONSUMER_SECRET=@withings-consumer-secret -e JSONBIN_SECRET=@jsonbin-secret -e JSONBIN_USERNAME=@jsonbin-username --alias $npm_package_now_alias",
+    "deploy": "now",
     "dev": "backpack",
     "build": "backpack build",
     "start": "node build/main.js"
   },
   "author": "Dan Reeves <hey@danreev.es>",
   "license": "ISC",
-  "devDependencies": {
-    "backpack-core": "^0.1.0"
-  },
   "dependencies": {
+    "backpack-core": "^0.1.0",
     "axios": "0.15.3",
     "dotenv": "4.0.0",
     "koa": "2",
@@ -24,8 +22,5 @@
     "passport": "0.3.2",
     "passport-withings": "0.1.0",
     "withings-request": "0.0.2"
-  },
-  "now": {
-    "alias": "running.danreev.es"
   }
 }

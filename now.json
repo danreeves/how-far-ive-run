@@ -1,0 +1,12 @@
+{
+    "name": "how-far-ive-run",
+    "type": "npm",
+    "alias": "running.danreev.es",
+    "env": {
+        "NODE_ENV": "production",
+        "WITHINGS_CONSUMER_KEY": "@withings-consumer-key",
+        "WITHINGS_CONSUMER_SECRET": "@withings-consumer-secret",
+        "JSONBIN_SECRET": "@jsonbin-secret",
+        "JSONBIN_USERNAME": "@jsonbin-username"
+    }
+}
