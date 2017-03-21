@@ -8,12 +8,9 @@ import { Strategy as WithingsStrategy } from 'passport-withings';
 
 import miles from './util/miles';
 import speed from './util/speed';
-import {
-    getData,
-    getNotifications,
-    subscribe
-} from './util/api';
+import { getData, getNotifications } from './util/api';
 import { getAuth, setAuth } from './util/auth';
+import subscribe from './util/subscribe';
 import gif from './util/gif';
 
 const WITHINGS_CONSUMER_KEY = process.env.WITHINGS_CONSUMER_KEY;
@@ -28,26 +25,28 @@ const app = new Koa();
 app.use(json());
 
 // Init Withings OAuth strategy with Passport
-passport.use(new WithingsStrategy(
-    {
-        consumerKey: WITHINGS_CONSUMER_KEY,
-        consumerSecret: WITHINGS_CONSUMER_SECRET,
-        callbackURL: CALLBACK_URL
-    },
-    function(token, tokenSecret, profile, done) {
-        const auth = {
-            token: token,
-            secret: tokenSecret,
-            id: profile.id
-        };
-        authRequest = Promise.resolve(auth);
-        setAuth(auth);
-        return done(undefined, profile.id);
-    }
-));
+passport.use(
+    new WithingsStrategy(
+        {
+            consumerKey: WITHINGS_CONSUMER_KEY,
+            consumerSecret: WITHINGS_CONSUMER_SECRET,
+            callbackURL: CALLBACK_URL,
+        },
+        function(token, tokenSecret, profile, done) {
+            const auth = {
+                token: token,
+                secret: tokenSecret,
+                id: profile.id,
+            };
+            authRequest = Promise.resolve(auth);
+            setAuth(auth);
+            return done(undefined, profile.id);
+        }
+    )
+);
 
 // Init passport auth middleware
-app.keys = [ 'secret' ];
+app.keys = ['secret'];
 app.use(session(app));
 app.use(passport.initialize());
 
@@ -77,7 +76,7 @@ app.use(async (ctx, next) => {
         tokenSecret: auth.secret,
         userid: auth.id,
         wbsUrl: 'https://wbsapi.withings.net/v2/',
-        timeout: 10000
+        timeout: 10000,
     };
     const withings = Withings(options);
     let data;
@@ -118,7 +117,7 @@ app.use(async (ctx, next) => {
             longest,
             fastest: {
                 distance: fastest.data.distance,
-                duration: fastest.data.effduration
+                duration: fastest.data.effduration,
             },
         };
     } else {
@@ -184,29 +183,13 @@ app.use(async (ctx, next) => {
 app.listen(PORT);
 console.log(`🏃  Running at ${CALLBACK_URL}`);
 
-authRequest.then(async function (auth) {
-    const options = {
-        consumerKey: WITHINGS_CONSUMER_KEY,
-        consumerSecret: WITHINGS_CONSUMER_SECRET,
-        token: auth.token,
-        tokenSecret: auth.secret,
-        userid: auth.id,
-        wbsUrl: 'https://wbsapi.withings.net/v2/',
-        timeout: 10000
-    };
-    const withings = Withings(options);
-    const profiles = await getNotifications(withings);
-    console.log(profiles)
-    // if (!profiles.length) {
-    //     try {
-    //         console.log(await subscribe(withings, {
-    //             userid: auth.id,
-    //             callbackurl: CALLBACK_URL,
-    //             comment: 'how-far-ive-run',
-    //             appli: 16,
-    //         }));
-    //     } catch (e) {
-    //         console.log(`💩 ${e}`);
-    //     }
-    // }
-});
+// Try registering for withings callbacks
+// on data sync, so the server is periodically
+// woken up! 😴
+authRequest.then(
+    subscribe({
+        CALLBACK_URL,
+        WITHINGS_CONSUMER_KEY,
+        WITHINGS_CONSUMER_SECRET,
+    })
+);
