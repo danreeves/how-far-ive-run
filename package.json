@@ -6,7 +6,8 @@
     "deploy": "now",
     "dev": "backpack",
     "build": "backpack build",
-    "start": "node build/main.js"
+    "start": "node build/main.js",
+    "lint": "xo"
   },
   "author": "Dan Reeves <hey@danreev.es>",
   "license": "ISC",
@@ -22,5 +23,18 @@
     "passport": "0.3.2",
     "passport-withings": "0.1.0",
     "withings-request": "0.0.2"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^1.5.0",
+    "xo": "^0.18.0"
+  },
+  "xo": {
+    "space": 4,
+    "ignores": [
+      "build/**"
+    ],
+    "extends": [
+      "prettier"
+    ]
   }
 }

@@ -1,11 +1,13 @@
-import Withings from 'withings-request';
+import withings from 'withings-request';
 import { getNotifications, subscribe } from './api';
 
-export default function setup(
+export default function setupSubscribe(
     { CALLBACK_URL, WITHINGS_CONSUMER_KEY, WITHINGS_CONSUMER_SECRET }
 ) {
-    return async function subscribe(auth) {
-        if (!CALLBACK_URL.includes('localhost')) return;
+    return async function (auth) {
+        if (!CALLBACK_URL.includes('localhost')) {
+            return;
+        }
 
         const options = {
             consumerKey: WITHINGS_CONSUMER_KEY,
@@ -16,8 +18,8 @@ export default function setup(
             wbsUrl: 'https://wbsapi.withings.net/v2/',
             timeout: 10000,
         };
-        const withings = Withings(options);
-        const { profiles } = await getNotifications(withings);
+        const w = withings(options);
+        const { profiles } = await getNotifications(w);
         console.log(profiles);
         const deployHasProfile = profiles.reduce(
             (acc, profile) => {
@@ -35,15 +37,15 @@ export default function setup(
         if (!deployHasProfile) {
             try {
                 console.log(
-                    await subscribe(withings, {
+                    await subscribe(w, {
                         userid: auth.id,
                         callbackurl: CALLBACK_URL,
                         comment: 'how-far-ive-run',
                         appli: 16,
                     })
                 );
-            } catch (e) {
-                console.log(`💩 ${e}`);
+            } catch (err) {
+                console.log(`💩 ${err}`);
             }
         }
     };

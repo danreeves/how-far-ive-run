@@ -1,6 +1,6 @@
-import 'dotenv/config';
+import 'dotenv/config'; // eslint-disable-line import/no-unassigned-import
 import Koa from 'koa';
-import Withings from 'withings-request';
+import withings from 'withings-request';
 import passport from 'koa-passport';
 import session from 'koa-session';
 import json from 'koa-json';
@@ -8,7 +8,7 @@ import { Strategy as WithingsStrategy } from 'passport-withings';
 
 import miles from './util/miles';
 import speed from './util/speed';
-import { getData, getNotifications } from './util/api';
+import { getData } from './util/api';
 import { getAuth, setAuth } from './util/auth';
 import subscribe from './util/subscribe';
 import gif from './util/gif';
@@ -18,7 +18,7 @@ const WITHINGS_CONSUMER_SECRET = process.env.WITHINGS_CONSUMER_SECRET;
 const PORT = 3000;
 const CALLBACK_URL = process.env.NOW_URL || `http://localhost:${PORT}`;
 
-const authRequest = getAuth();
+let authRequest = getAuth();
 const app = new Koa();
 
 // Lets you return an object as json
@@ -32,9 +32,9 @@ passport.use(
             consumerSecret: WITHINGS_CONSUMER_SECRET,
             callbackURL: CALLBACK_URL,
         },
-        function(token, tokenSecret, profile, done) {
+        (token, tokenSecret, profile, done) => {
             const auth = {
-                token: token,
+                token,
                 secret: tokenSecret,
                 id: profile.id,
             };
@@ -54,8 +54,8 @@ app.use(async (ctx, next) => {
     const auth = await authRequest;
     // Only oauth if we haven't cached the necessary credentials
     if (!auth.id) {
-        return passport.authenticate('withings', function(err, user) {
-            if (user === false) {
+        return passport.authenticate('withings', (err, user) => {
+            if (err || user === false) {
                 ctx.body = { success: false };
                 ctx.throw(401);
             } else {
@@ -78,13 +78,13 @@ app.use(async (ctx, next) => {
         wbsUrl: 'https://wbsapi.withings.net/v2/',
         timeout: 10000,
     };
-    const withings = Withings(options);
+    const w = withings(options);
     let data;
     try {
-        data = await getData(withings);
-    } catch (e) {
+        data = await getData(w);
+    } catch (err) {
         console.log('Errored');
-        ctx.body = { error: `💩 ${e}` };
+        ctx.body = { error: `💩 ${err}` };
         return next();
     }
 
@@ -109,7 +109,7 @@ app.use(async (ctx, next) => {
         (prev, current) => speed(prev) > speed(current) ? prev : current
     );
 
-    if (ctx.request.path == '/json') {
+    if (ctx.request.path === '/json') {
         ctx.body = {
             totalDistance,
             sessions,

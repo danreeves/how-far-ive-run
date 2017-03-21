@@ -9,14 +9,13 @@ const axi = axios.create({
 
 export async function getAuth() {
     try {
-        return await axi.get(JSONBIN_URL)
-            .then(d => d.data);
-    } catch (e) {
-        console.log('erroring', e)
+        return await axi.get(JSONBIN_URL).then(d => d.data);
+    } catch (err) {
+        console.log('erroring', err);
         return {};
     }
 }
 
 export async function setAuth(auth) {
-    return await axi.post(JSONBIN_URL, auth);
+    return axi.post(JSONBIN_URL, auth);
 }
