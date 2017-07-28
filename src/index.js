@@ -1,15 +1,12 @@
 import 'dotenv/config'; // eslint-disable-line import/no-unassigned-import
 import Koa from 'koa';
 import withings from 'withings-request';
-import passport from 'koa-passport';
-import session from 'koa-session';
 import json from 'koa-json';
-import { Strategy as WithingsStrategy } from 'passport-withings';
 
 import miles from './util/miles';
 import speed from './util/speed';
 import { getData } from './util/api';
-import { getAuth, setAuth } from './util/auth';
+import { getAuth } from './util/auth';
 import subscribe from './util/subscribe';
 import gif from './util/gif';
 
@@ -18,54 +15,11 @@ const WITHINGS_CONSUMER_SECRET = process.env.WITHINGS_CONSUMER_SECRET;
 const PORT = 3000;
 const CALLBACK_URL = process.env.NOW_URL || `http://localhost:${PORT}`;
 
-let authRequest = getAuth();
+const authRequest = getAuth();
 const app = new Koa();
 
 // Lets you return an object as json
 app.use(json());
-
-// Init Withings OAuth strategy with Passport
-passport.use(
-    new WithingsStrategy(
-        {
-            consumerKey: WITHINGS_CONSUMER_KEY,
-            consumerSecret: WITHINGS_CONSUMER_SECRET,
-            callbackURL: CALLBACK_URL,
-        },
-        (token, tokenSecret, profile, done) => {
-            const auth = {
-                token,
-                secret: tokenSecret,
-                id: profile.id,
-            };
-            authRequest = Promise.resolve(auth);
-            setAuth(auth);
-            return done(undefined, profile.id);
-        }
-    )
-);
-
-// Init passport auth middleware
-app.keys = ['secret'];
-app.use(session(app));
-app.use(passport.initialize());
-
-app.use(async (ctx, next) => {
-    const auth = await authRequest;
-    // Only oauth if we haven't cached the necessary credentials
-    if (!auth.id) {
-        return passport.authenticate('withings', (err, user) => {
-            if (err || user === false) {
-                ctx.body = { success: false };
-                ctx.throw(401);
-            } else {
-                ctx.login(user);
-                ctx.redirect('/');
-            }
-        })(ctx, next);
-    }
-    await next();
-});
 
 app.use(async (ctx, next) => {
     const auth = await authRequest;
@@ -87,6 +41,8 @@ app.use(async (ctx, next) => {
         ctx.body = { error: `💩 ${err}` };
         return next();
     }
+
+    console.log(data)
 
     // Category 2 is running
     const running = data.series.filter(i => i.category === 2);
@@ -133,7 +89,7 @@ app.use(async (ctx, next) => {
                 position: fixed;
                 height: 100%;
                 width: 100%;
-                background: url("${gif()}") no-repeat center center fixed;
+                // background: url("${gif()}") no-repeat center center fixed;
                 background-size: cover;
 
                 font-family: Impact, Haettenschweiler, Franklin Gothic Bold, Charcoal, Helvetica Inserat, Bitstream Vera Sans Bold, Arial Black, sans serif;

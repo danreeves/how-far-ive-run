@@ -4,24 +4,27 @@
   "description": "Some data from the Withings API about my running this year",
   "scripts": {
     "deploy": "now",
-    "dev": "backpack",
-    "build": "backpack build",
-    "start": "node build/main.js",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "lint": "xo"
   },
   "author": "Dan Reeves <hey@danreev.es>",
   "license": "ISC",
   "dependencies": {
-    "backpack-core": "^0.1.0",
     "axios": "0.15.3",
+    "backpack-core": "^0.1.0",
     "dotenv": "4.0.0",
     "koa": "2",
     "koa-json": "2",
     "koa-passport": "3.0.0-rc.3",
     "koa-session": "3.4.0",
     "lru-cache": "4.0.2",
+    "next": "^1.2.3",
     "passport": "0.3.2",
     "passport-withings": "0.1.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "withings-request": "0.0.2"
   },
   "devDependencies": {
@@ -34,7 +37,12 @@
       "build/**"
     ],
     "extends": [
-      "prettier"
+      "xo-react",
+      "prettier",
+      "prettier/react"
+    ],
+    "plugins": [
+      "react"
     ]
   }
 }
